@@ -1,18 +1,29 @@
 # This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+import numpy as np
+import matplotlib.pyplot as plt
+import dynamics
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def test_module():
+    # Funkcja tymczasowa do usuniecia potem
+    print(dynamics.calculate_kinetic_energy(3, 3))
+    print(dynamics.calculate_potential_energy(1, 5, 3))
+    print(dynamics.calculate_osc_speed(0.5, 3.14, 10))
+    print(dynamics.calculate_osc_acceleration_magnitude(0.5,3.14,10))
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/23214312421412
+test_module()
 
-#TEST
+#Inicjalizacja czestowsci wlasnych i amplitud
+w_x = 2
+w_y = 2
+a_x = 1
+a_y = 1
+f = np.pi/2
+
+#trajektoria w postaci paramatrycznej
+t = np.arange(0,10,0.01)
+x = a_x*np.sin(w_x*t)
+y = a_y*np.sin(w_y*t + f)
+
+plt.plot(x,y,'g-')
+plt.show()
