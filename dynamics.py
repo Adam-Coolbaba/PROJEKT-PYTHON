@@ -8,6 +8,8 @@ def calculate_kinetic_energy(m, v):
 def calculate_potential_energy(m, w, x):
     return m*(w*x)**2/2
 
+def calculate_deviation (fi0 ,w , t):
+    return fi0*np.cos(w*t)
 
 def calculate_osc_speed(t, w, a):
     return a*w*np.cos(w*t)
