@@ -6,7 +6,7 @@ import matplotlib as mpl
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
-import dynamics
+
 
 
 def update_graph(event):
@@ -14,21 +14,33 @@ def update_graph(event):
     if str(event.key) == 'q':
         _quit()
     #----------
-    try:
-        w_y = int(event.key)
-        line.set_ydata(np.sin(int(event.key) * t))
-    except ValueError:
-        w_y = 1
-        line.set_ydata(np.sin(1 * t))
-    fig.suptitle(f'Wykres dla: w1 = {w_x}, w2 = {w_y}')
-    fig.canvas.draw()
+    update_line(event.key)
+    set_up_figure()
     mpl.backend_bases.key_press_handler(event, canvas)
 
 
-def set_up_canvas(c):
-    c.draw()
-    c.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
-    c.mpl_connect("key_press_event", update_graph)
+def update_line(key):
+    # TODO: zminic try na if? albo ulepszyc wyrazenie pod try:
+    global w_y
+    try:
+        w_y = int(key)
+        line.set_ydata(np.sin(w_y * t))
+    except ValueError:
+        w_y = 1
+        line.set_ydata(np.sin(w_y * t))
+
+
+def set_up_figure():
+    fig.supxlabel("x [m]", fontsize=FONT_SIZE)
+    fig.supylabel("y [m]", fontsize=FONT_SIZE)
+    fig.suptitle(f'Wykres dla: \u03C9\u2081 = {w_x}, \u03C9\u2082 = {w_y}', fontsize=FONT_SIZE)
+    fig.canvas.draw()
+
+
+def set_up_canvas():
+    global canvas
+    canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
+    canvas.mpl_connect("key_press_event", update_graph)
 
 
 def _quit():
@@ -52,21 +64,17 @@ x = a_x*np.sin(w_x*t)
 y = a_y*np.sin(w_y*t + f)
 
 fig = Figure(figsize=(GRAPH_SIZE, GRAPH_SIZE), dpi=100)
-ax = fig.add_subplot(111)
-line, = ax.plot(x, y, 'g-')
+subplot = fig.add_subplot(111)
+line, = subplot.plot(x, y, 'g-')
 canvas = FigureCanvasTkAgg(fig, master=root)
-fig.supxlabel("x [m]", fontsize=FONT_SIZE)
-fig.supylabel("y [m]", fontsize=FONT_SIZE)
-fig.suptitle("Wykres", fontsize=FONT_SIZE, fontweight=500)
-set_up_canvas(canvas)
+
+set_up_figure()
+set_up_canvas()
 
 button = tkinter.Button(master=root, text="Zamknij", command=_quit)
 button.pack(side=tkinter.BOTTOM)
 
 tkinter.mainloop()
-
-
-
 
 
 
