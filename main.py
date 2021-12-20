@@ -8,10 +8,7 @@ from matplotlib.figure import Figure
 from custom_widgets import EntryBox
 
 #TODO:
-# 1)Poprawa funkcji down_action() (powinna pozwalać na ustawienie do 0)
-# 2)Poprwa grafiki (kszatałt i wielkość przycisków i pól do wpisywania, pobawienie się z rozszerzaniem)
-# 3)Potencjalnie zamiast używania mein_frame i entry_frame zrobić kształy przy użyciu .grid()
-# 4)Jeśli się da, sprawienie aby okienka nie dało się zmnijeszyć bardziej niż wielkość wykresu
+# 1)Potencjalnie zamiast używania mein_frame i entry_frame zrobić kształy przy użyciu .grid()
 
 
 def update_graph():
@@ -40,16 +37,17 @@ def _quit():
 GRAPH_SIZE = 6
 FONT_SIZE = 15
 root = tk.Tk()
+root.minsize(720,630)
 root.wm_title("Wykres drgan prostopadlych")
 
 main_frame = tk.Frame(master=root)
 entry_frame = tk.Frame(master=main_frame)
 
-a_y = EntryBox(entry_frame, "A\u2082", 1, update_graph)
-a_x = EntryBox(entry_frame, "A\u2081", 1, update_graph)
-w_y = EntryBox(entry_frame, "\u03C9\u2082", 1, update_graph)
-w_x = EntryBox(entry_frame, "\u03C9\u2081", 1, update_graph)
-f = EntryBox(entry_frame, "\u0394\u03C6 (*\u03C0/6)", 3, update_graph)
+a_y = EntryBox(entry_frame, "A\u2082:", 1, update_graph)
+a_x = EntryBox(entry_frame, "A\u2081:", 1, update_graph)
+w_y = EntryBox(entry_frame, "\u03C9\u2082:", 1, update_graph)
+w_x = EntryBox(entry_frame, "\u03C9\u2081:", 1, update_graph)
+f = EntryBox(entry_frame, "\u0394\u03C6 (*\u03C0/6):", 3, update_graph)
 
 t = np.arange(0, 100, 0.001)
 x = a_x.value*np.sin(w_y.value*t)

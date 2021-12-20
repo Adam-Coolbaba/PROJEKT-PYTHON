@@ -10,8 +10,8 @@ class EntryBox:
     def __init__(self, parent, name, value, fun):
         self.value = value
         self.on_change_fun = fun
-        frame = tk.Frame(master=parent)
-        name = tk.Label(master=frame, text=name)
+        frame = tk.Frame(master=parent, padx=10, pady=5)
+        name = tk.Label(master=frame, text=name, font=15)
         buttons_frame = tk.Frame(master=frame)
 
         val_cmd = frame.register(self.is_valid)
@@ -19,16 +19,16 @@ class EntryBox:
         self.entry_text.set(value)
         self.entry_text.trace_add("write", self.on_entry_change)
         self.entry = tk.Entry(master=frame, textvariable=self.entry_text,
-                              validate='key', validatecommand=(val_cmd, '%P'))
+                              validate='key', validatecommand=(val_cmd, '%P'), width=5, font=20, justify='center')
 
-        up_button = tk.Button(master=buttons_frame, text="+", command=self.up_action)
-        down_button = tk.Button(master=buttons_frame, text="-", command=self.down_action)
+        up_button = tk.Button(master=buttons_frame, text="+", command=self.up_action, width=2, height=1)
+        down_button = tk.Button(master=buttons_frame, text="-", command=self.down_action, width=2, height=1)
 
         name.pack(side=tk.TOP)
         self.entry.pack(side=tk.LEFT)
-        up_button.pack()
-        down_button.pack()
-        buttons_frame.pack(side=tk.RIGHT)
+        down_button.pack(side=tk.LEFT)
+        up_button.pack(side=tk.LEFT)
+        buttons_frame.pack(side=tk.LEFT)
         frame.pack(side=tk.BOTTOM, fill=tk.NONE)
 
     def up_action(self):
