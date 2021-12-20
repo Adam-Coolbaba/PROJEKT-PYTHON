@@ -5,7 +5,7 @@ class EntryBox:
 
     entry = None
     value = 0
-    on_change_fun = lambda: print("Changed")
+    on_change_fun = None
 
     def __init__(self, parent, name, value, fun):
         self.value = value
@@ -21,8 +21,8 @@ class EntryBox:
         self.entry = tk.Entry(master=frame, textvariable=self.entry_text,
                               validate='key', validatecommand=(val_cmd, '%P'), width=5, font=20, justify='center')
 
-        up_button = tk.Button(master=buttons_frame, text="+", command=self.up_action, width=2, height=1)
-        down_button = tk.Button(master=buttons_frame, text="-", command=self.down_action, width=2, height=1)
+        up_button = tk.Button(master=buttons_frame, text="+", command=self.increase, width=2, height=1)
+        down_button = tk.Button(master=buttons_frame, text="-", command=self.decrease, width=2, height=1)
 
         name.pack(side=tk.TOP)
         self.entry.pack(side=tk.LEFT)
@@ -31,12 +31,12 @@ class EntryBox:
         buttons_frame.pack(side=tk.LEFT)
         frame.pack(side=tk.BOTTOM, fill=tk.NONE)
 
-    def up_action(self):
+    def increase(self):
         self.value = int(self.value+1)
         self.entry.delete(0, tk.END)
         self.entry.insert(0, str(self.value))
 
-    def down_action(self):
+    def decrease(self):
         if self.value == int(self.value) and self.value > 0:
             self.value = int(self.value-1)
         else:

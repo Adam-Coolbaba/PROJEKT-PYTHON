@@ -36,6 +36,7 @@ def _quit():
 
 GRAPH_SIZE = 6
 FONT_SIZE = 15
+
 root = tk.Tk()
 root.minsize(720,630)
 root.wm_title("Wykres drgan prostopadlych")
