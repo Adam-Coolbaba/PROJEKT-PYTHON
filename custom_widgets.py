@@ -37,7 +37,7 @@ class EntryBox:
         self.entry.insert(0, str(self.value))
 
     def down_action(self):
-        if self.value == int(self.value) and self.value > 1:
+        if self.value == int(self.value) and self.value > 0:
             self.value = int(self.value-1)
         else:
             self.value = int(self.value)
