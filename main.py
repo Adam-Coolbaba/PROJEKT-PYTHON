@@ -4,14 +4,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
+from matplotlib import animation
 
 import dynamics
 from custom_widgets import EntryBox
 
 
+
 def update_graph():
     update_line()
     plot_potential()
+    animate(0)
     update_axis()
     fig.canvas.draw()
     potential_fig.canvas.draw()
@@ -45,6 +48,13 @@ def plot_potential():
     potential_subplot.plot_surface(x, y, z)
 
 
+def animate(i):
+    x = a_x.value * np.sin(w_x.value * (0.01*i))
+    y = a_y.value * np.sin(w_y.value * (0.01*i) + np.pi/6*f.value)
+    point.set_data(x, y)
+    return point,
+
+
 def _quit():
     root.quit()
     root.destroy()
@@ -66,13 +76,14 @@ w_y = EntryBox(entry_frame, "\u03C9\u2082:", 1, update_graph)
 w_x = EntryBox(entry_frame, "\u03C9\u2081:", 1, update_graph)
 f = EntryBox(entry_frame, "\u0394\u03C6 (*\u03C0/6):", 3, update_graph)
 
-t = np.arange(0, 100, 0.001)
+t = np.arange(0, 100, 0.01)
 x = a_x.value*np.sin(w_y.value*t)
 y = a_y.value*np.sin(w_x.value*t + np.pi/6*f.value)
 
 fig = Figure(figsize=(GRAPH_SIZE, GRAPH_SIZE), dpi=100)
 subplot = fig.add_subplot(111)
 line, = subplot.plot(x, y, 'g-')
+point, = subplot.plot(0, 0, 'o')
 
 fig.supxlabel("x [m]", fontsize=FONT_SIZE)
 fig.supylabel("y [m]", fontsize=FONT_SIZE)
@@ -92,6 +103,8 @@ entry_frame.pack(side=tk.LEFT)
 main_frame.pack(fill=tk.BOTH,expand=True)
 button = tk.Button(master=root, text="Zamknij", command=_quit)
 button.pack(side=tk.BOTTOM)
+
+anim = animation.FuncAnimation(fig, animate, interval=10)
 
 tk.mainloop()
 
