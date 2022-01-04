@@ -53,6 +53,8 @@ class EntryBox:
         if v:
             try:
                 float(v)
+                if float(v) < 0:
+                    return False
                 return True
             except ValueError:
                 return False

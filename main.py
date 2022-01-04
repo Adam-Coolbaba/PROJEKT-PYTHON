@@ -53,8 +53,8 @@ def plot_potential():
     y = np.arange(-a - .5, a + .5, 0.1)
     x, y = np.meshgrid(x, y)
     z = dynamics.calc_potential_energy(a_x.value, w_x.value, x) + dynamics.calc_potential_energy(a_y.value, w_y.value, y)
-    potential_subplot.plot_surface(x, y, z)
-    #potential_subplot.pcolor(x,y,z)
+    #potential_subplot.plot_surface(x, y, z)
+    potential_subplot.pcolor(x,y,z)
 
 
 def animate(i):
@@ -115,8 +115,8 @@ fig.suptitle(f'Wykres toru', fontsize=FONT_SIZE)
 set_up_canvas(fig,top_frame,tk.LEFT)
 
 potential_fig = Figure(figsize=(GRAPH_SIZE, GRAPH_SIZE), dpi=100)
-potential_subplot = potential_fig.add_subplot(111, projection='3d')
-#potential_subplot = potential_fig.add_subplot(111)
+#potential_subplot = potential_fig.add_subplot(111, projection='3d')
+potential_subplot = potential_fig.add_subplot(111)
 
 plot_potential()
 potential_fig.suptitle(f'Wykres potencjału', fontsize=FONT_SIZE)
