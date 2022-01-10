@@ -4,30 +4,39 @@ from tkinter import *
 class Table:
 
     def __init__(self, root):
-
+        self.table_frame = Frame(master=root)
         # code for creating table
+        self.value_label_list = []
         for i in range(total_rows):
             for j in range(total_columns):
-                self.e = Entry(root, width=20, fg='blue',
-                               font=('Arial', 16, 'bold'))
+                label = Label(self.table_frame, width=20, fg='blue',
+                              font=('Arial', 16, 'bold'))
 
-                self.e.grid(row=i, column=j)
-                self.e.insert(END, lst[i][j])
+                label.grid(row=i, column=j)
+                label.config(text=lst[i][j])
+                if j == 1:
+                    self.value_label_list.append(label)
 
-lst = [("x[m]", "value1"),
-        ("y[m]", "value2"),
-        ("v [m/s]", "value3"),
-        ("a[m/s^2]", "value4"),
-        ("Ek [J]", "value5"),
-        ("Ep [J]", "value6"),
-        ("R [m]" , "value7")]
+    def update(self, updated_list):
+        for i in range(len(self.value_label_list)):
+            print(i)
+            self.value_label_list[i].config(text=updated_list[i])
+
+lst = [("x [m]", "0"),
+        ("y [m]", "0"),
+        ("v [m/s]", "0"),
+        ("a [m/s^2]", "0"),
+        ("Ek [J]", "0"),
+        ("Ep [J]", "0"),
+        ("R [m]" , "0")]
 
 total_rows = len(lst)
 total_columns = len(lst[0])
 
-# root = Tk()
-# t = Table(root)
-# root.mainloop()
+if __name__ == '__main__':
+    root = Tk()
+    t = Table(root)
+    root.mainloop()
 
 
 
