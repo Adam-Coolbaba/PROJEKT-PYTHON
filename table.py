@@ -19,8 +19,12 @@ class Table:
 
     def update(self, updated_list):
         for i in range(len(self.value_label_list)):
-            print(i)
-            self.value_label_list[i].config(text=updated_list[i])
+            text = ''
+            if isinstance(updated_list[i],float):
+                text = '{:.2f}'.format(updated_list[i])
+            else:
+                text = updated_list[i]
+            self.value_label_list[i].config(text=text)
 
 lst = [("x [m]", "0"),
         ("y [m]", "0"),

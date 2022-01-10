@@ -74,6 +74,8 @@ def update_table(time):
     e_k = dynamics.calc_kinetic_energy(1, (v_x ** 2 + v_y ** 2))
     e_p = dynamics.calc_potential_energy(1, w_x.value, x) + dynamics.calc_potential_energy(1, w_y.value, y)
     r = dynamics.calc_curvature(v_x,v_y,a_x,a_y)
+    if r == -1:
+        r = 'inf'
     list = [x,
             y,
             (v_x ** 2 + v_y ** 2) ** (1 / 2),
