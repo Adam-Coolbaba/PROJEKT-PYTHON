@@ -22,5 +22,7 @@ def calc_osc_acceleration_magnitude(t, w, a, f):
 
 
 def calc_curvature(v_x, v_y, a_x, a_y):
+    if (a_x**2+a_y**2 - (a_x*v_x+a_y*v_y)**2/(v_x**2+v_y**2)) < 0:
+        return 0
     return (a_x**2+a_y**2 - (a_x*v_x+a_y*v_y)**2/(v_x**2+v_y**2))**(1/2)/(v_x**2+v_y**2)
 

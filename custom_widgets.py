@@ -51,9 +51,11 @@ class EntryBox:
 
     def is_valid(self, v):
         if v:
+            if len(v) > 4:
+                return False
             try:
-                float(v)
-                if float(v) < 0:
+                v = float(v)
+                if v < 0 or v > 50:
                     return False
                 return True
             except ValueError:
