@@ -163,7 +163,7 @@ main_frame.pack(fill=tk.BOTH, expand=True)
 button = tk.Button(master=root, text="Zamknij", command=_quit)
 speed_frame = tk.Frame(master=animation_frame)
 animation_frame.grid(row=2,column=1)
-
+#
 stop_button = tk.Button(master=speed_frame, text="\u23f8", command=change_running, width=2)
 stop_button.pack(side=tk.LEFT)
 for i in range(5):
