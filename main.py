@@ -119,7 +119,6 @@ def change_running():
 
 def change_speed(a):
     anim2._interval = INTERVAL / a
-    print(a)
 
 
 root = tk.Tk()
@@ -129,6 +128,7 @@ root.resizable(False, False)
 main_frame = tk.Frame(master=root)
 graphs_frame = tk.Frame(master=main_frame)
 entry_frame = tk.Frame(master=main_frame)
+animation_frame = tk.Frame(master=graphs_frame)
 time_p = 0
 A_y = EntryBox(entry_frame, "A\u2082:", 1, update_graphs)
 A_x = EntryBox(entry_frame, "A\u2081:", 1, update_graphs)
@@ -161,17 +161,17 @@ table = Table(graphs_frame)
 table.table_frame.grid(column=2, row=2)
 main_frame.pack(fill=tk.BOTH, expand=True)
 button = tk.Button(master=root, text="Zamknij", command=_quit)
-speed_frame = tk.Frame(master=main_frame)
+speed_frame = tk.Frame(master=animation_frame)
+animation_frame.grid(row=2,column=1)
 
+stop_button = tk.Button(master=speed_frame, text="\u23f8", command=change_running)
+stop_button.pack(side=tk.LEFT)
 for i in range(5):
     speed = 2**i*0.25
-    print(speed)
     speed_button_025 = tk.Button(master=speed_frame, text=f"{speed}", command=partial(change_speed, speed))
     speed_button_025.pack(side=tk.LEFT)
 
-stop_button = tk.Button(master=main_frame, text="\u23f8", command=change_running)
 speed_frame.pack(side=tk.BOTTOM)
-stop_button.pack(side=tk.BOTTOM)
 button.pack(side=tk.BOTTOM)
 
 
@@ -182,10 +182,12 @@ anim_subplot.set_ylim([-1.2, 1.2])
 anim_line, = anim_subplot.plot([], [], lw=2)
 xdata, ydata = [], []
 point2, = anim_subplot.plot(0, 0, 'o')
-set_up_canvas(anim_fig, graphs_frame, 1, 2)
+c = FigureCanvasTkAgg(anim_fig, master=animation_frame)
+c.get_tk_widget().pack()
+c.draw()
+
 time_p = 0
 time = 0
-
 
 anim_fig.supxlabel("x [m]", fontsize=FONT_SIZE)
 anim_fig.supylabel("y [m]", fontsize=FONT_SIZE)
