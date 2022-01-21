@@ -1,5 +1,7 @@
-
+import math
 import tkinter as tk
+from functools import partial
+
 import numpy as np
 
 import matplotlib.pyplot as plt
@@ -11,11 +13,15 @@ import dynamics
 from custom_widgets import EntryBox
 from table import Table
 
+GRAPH_SIZE = 4
+FONT_SIZE = 10
+INTERVAL = 30
+IS_RUNNING = True
+
 
 def update_graphs():
     update_line()
     plot_potential()
-    #animate(0)
     update_animation()
     update_axis()
     fig.canvas.draw()
@@ -23,9 +29,11 @@ def update_graphs():
 
 
 def update_animation():
+    global time_p
     xdata[:], ydata[:] = [], []
     anim_subplot.set_xlim(subplot.get_xlim())
     anim_subplot.set_ylim(subplot.get_ylim())
+    time_p = time
 
 
 def update_line():
@@ -78,7 +86,12 @@ def update_table(time):
 
 
 def animate2(i):
+    global time, xdata, ydata, time_p
     time = (0.01 * i)
+    if time - time_p > np.pi*2/np.gcd(int(w_x.value*100), int(w_y.value*100))*100:
+        xdata.clear()
+        ydata.clear()
+        time_p = time
     x = A_x.value * np.sin(w_x.value * time)
     y = A_y.value * np.sin(w_y.value * time + np.pi / 6 * f.value)
     xdata.append(x)
@@ -94,15 +107,21 @@ def _quit():
     root.destroy()
 
 
-def change_speed():
-    global anim2
-#    anim2.pause()
- #   anim2 = animation.FuncAnimation(anim_fig, animate2, interval=INTERVAL)
+def change_running():
+    global IS_RUNNING
+    if IS_RUNNING:
+        anim2.pause()
+        stop_button.config(text='\u23f5')
+    else:
+        anim2.resume()
+        stop_button.config(text='\u23f8')
+    IS_RUNNING = not IS_RUNNING
 
 
-GRAPH_SIZE = 4
-FONT_SIZE = 15
-INTERVAL = 30
+def change_speed(a):
+    anim2._interval = INTERVAL / a
+    print(a)
+
 
 root = tk.Tk()
 root.wm_title("Wykres drgan prostopadlych")
@@ -111,7 +130,7 @@ root.resizable(False, False)
 main_frame = tk.Frame(master=root)
 graphs_frame = tk.Frame(master=main_frame)
 entry_frame = tk.Frame(master=main_frame)
-
+time_p = 0
 A_y = EntryBox(entry_frame, "A\u2082:", 1, update_graphs)
 A_x = EntryBox(entry_frame, "A\u2081:", 1, update_graphs)
 w_y = EntryBox(entry_frame, "\u03C9\u2082:", 1, update_graphs)
@@ -125,7 +144,6 @@ y = A_y.value * np.sin(w_x.value * t + np.pi / 6 * f.value)
 fig = Figure(figsize=(GRAPH_SIZE, GRAPH_SIZE), dpi=100)
 subplot = fig.add_subplot(111)
 line, = subplot.plot(x, y, 'g-')
-#point, = subplot.plot(0, 0, 'o')
 
 fig.supxlabel("x [m]", fontsize=FONT_SIZE)
 fig.supylabel("y [m]", fontsize=FONT_SIZE)
@@ -140,35 +158,29 @@ plot_potential()
 potential_fig.suptitle(f'Wykres potencjału', fontsize=FONT_SIZE)
 set_up_canvas(potential_fig, graphs_frame, 2, 1)
 
-entry_frame.pack(side=tk.RIGHT)
-
 table = Table(graphs_frame)
 table.table_frame.grid(column=2, row=2)
-
 main_frame.pack(fill=tk.BOTH, expand=True)
 button = tk.Button(master=root, text="Zamknij", command=_quit)
 speed_frame = tk.Frame(master=main_frame)
-speed_button_025 = tk.Button(master=speed_frame, text="x0.25", command=change_speed)
-speed_button_05 = tk.Button(master=speed_frame, text="x0.5", command=lambda: change_speed())
-speed_button_1 = tk.Button(master=speed_frame, text="x1", command=lambda: change_speed())
-speed_button_2 = tk.Button(master=speed_frame, text="x2", command=lambda: change_speed())
-speed_button_4 = tk.Button(master=speed_frame, text="x4", command=lambda: change_speed())
-speed_button_025.pack(side=tk.LEFT)
-speed_button_05.pack(side=tk.LEFT)
-speed_button_1.pack(side=tk.LEFT)
-speed_button_2.pack(side=tk.LEFT)
-speed_button_4.pack(side=tk.LEFT)
 
+for i in range(5):
+    speed = 2**i*0.25
+    print(speed)
+    speed_button_025 = tk.Button(master=speed_frame, text=f"{speed}", command=partial(change_speed, speed))
+    speed_button_025.pack(side=tk.LEFT)
+
+stop_button = tk.Button(master=main_frame, text="\u23f8", command=change_running)
 speed_frame.pack(side=tk.BOTTOM)
+stop_button.pack(side=tk.BOTTOM)
 button.pack(side=tk.BOTTOM)
 
-#anim = animation.FuncAnimation(fig, animate, interval=30)
 
 anim_fig = Figure(figsize=(GRAPH_SIZE, GRAPH_SIZE), dpi=100)
 anim_subplot = anim_fig.add_subplot(111)
 anim_subplot.set_xlim([-1.2, 1.2])
 anim_subplot.set_ylim([-1.2, 1.2])
-anim_line, = anim_subplot.plot([], [], lw = 2)
+anim_line, = anim_subplot.plot([], [], lw=2)
 xdata, ydata = [], []
 point2, = anim_subplot.plot(0, 0, 'o')
 set_up_canvas(anim_fig, graphs_frame, 1, 2)
@@ -183,24 +195,15 @@ anim_fig.suptitle(f'Animacja', fontsize=FONT_SIZE)
 fig.supxlabel("x [m]", fontsize=FONT_SIZE)
 fig.supylabel("y [m]", fontsize=FONT_SIZE)
 fig.suptitle(f'Wykres toru', fontsize=FONT_SIZE)
+
 graphs_frame.pack(side=tk.LEFT)
+entry_frame.pack(side=tk.LEFT)
+fig.tight_layout()
+potential_fig.tight_layout()
+anim_fig.tight_layout()
 
 anim2 = animation.FuncAnimation(anim_fig, animate2, interval=INTERVAL)
-
-
 tk.mainloop()
 
-#Propozycja jak będziemy mieli za dużo czasu:
-def Td():
-    ax = plt.axes(projection='3d')
 
-    t = np.arange(0,10,0.01)
-    x = np.sin(2*t)
-    y = np.sin(4*t)
-    z = np.sin(6*t)
-
-    ax.plot3D(x,y,z,'g-')
-    plt.show()
-
-#Td()
 

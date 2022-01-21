@@ -8,17 +8,12 @@ class Table:
         # code for creating table
         self.value_label_list = []
         for i in range(total_rows):
-            for j in range(total_columns+1):
-                label = Label(self.table_frame, width=20,
-                              font=('Arial', 16, 'bold'), anchor='w')
-
+            for j in range(total_columns):
+                label = Label(self.table_frame, font=('Arial', 16, 'bold'), anchor='w')
                 label.grid(row=i, column=j)
-                if j == 0:
-                    label.config(text=' '*4)
-                else:
-                    label.config(text=lst[i][j-1])
-                    if j == 2:
-                        self.value_label_list.append(label)
+                label.config(text=lst[i][j])
+                if j == 1:
+                    self.value_label_list.append(label)
 
     def update(self, updated_list):
         for i in range(len(self.value_label_list)):
