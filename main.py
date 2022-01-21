@@ -10,8 +10,7 @@ from matplotlib.figure import Figure
 from matplotlib import animation
 
 import dynamics
-from custom_widgets import EntryBox
-from table import Table
+from custom_widgets import EntryBox, Table
 
 GRAPH_SIZE = 4
 FONT_SIZE = 10
