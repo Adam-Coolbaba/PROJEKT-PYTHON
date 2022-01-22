@@ -61,6 +61,10 @@ def plot_potential():
     x, y = np.meshgrid(x, y)
     z = dynamics.calc_potential_energy(A_x.value, w_x.value, x) + dynamics.calc_potential_energy(A_y.value, w_y.value, y)
     potential_subplot.plot_surface(x, y, z)
+    potential_subplot.set_xlabel("X [m]")
+    potential_subplot.set_ylabel("Y [m]")
+    potential_subplot.set_zlabel("E [J]")
+
 
 
 # def animate(i):
@@ -156,6 +160,7 @@ potential_subplot = potential_fig.add_subplot(111, projection='3d')
 plot_potential()
 potential_fig.suptitle(f'Wykres potencjału', fontsize=FONT_SIZE)
 set_up_canvas(potential_fig, graphs_frame, 2, 1)
+
 
 table = Table(graphs_frame)
 table.table_frame.grid(column=2, row=2)
