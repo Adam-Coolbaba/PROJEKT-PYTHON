@@ -4,6 +4,7 @@ from tkinter import ttk
 
 class EntryBox:
 
+    LIMIT = 50
     entry = None
     value = 0
     on_change_fun = None
@@ -33,9 +34,10 @@ class EntryBox:
         frame.pack(side=tk.BOTTOM, fill=tk.NONE)
 
     def increase(self):
-        self.value = int(self.value+1)
-        self.entry.delete(0, tk.END)
-        self.entry.insert(0, str(self.value))
+        if self.value < self.LIMIT:
+            self.value = int(self.value+1)
+            self.entry.delete(0, tk.END)
+            self.entry.insert(0, str(self.value))
 
     def decrease(self):
         if self.value == int(self.value) and self.value > 0:
@@ -56,7 +58,7 @@ class EntryBox:
                 return False
             try:
                 v = float(v)
-                if v < 0 or v > 50:
+                if v < 0 or v > self.LIMIT:
                     return False
                 return True
             except ValueError:
