@@ -22,10 +22,10 @@ IS_RUNNING = True
 def update_graphs():
     update_line()
     plot_potential()
-    update_animation()
-    update_axis()
+    update_axis(subplot)
     fig.canvas.draw()
     potential_fig.canvas.draw()
+    update_animation()
 
 
 def update_animation():
@@ -33,6 +33,7 @@ def update_animation():
     xdata[:], ydata[:] = [], []
     anim_subplot.set_xlim(subplot.get_xlim())
     anim_subplot.set_ylim(subplot.get_ylim())
+    update_axis(anim_subplot)
     time_p = time
 
 
@@ -42,10 +43,10 @@ def update_line():
     line.set_xdata(A_x.value * np.sin(w_x.value * t))
 
 
-def update_axis():
-    subplot.set_aspect('equal', adjustable='datalim')
-    subplot.relim()
-    subplot.autoscale_view()
+def update_axis(plot):
+    plot.set_aspect('equal', adjustable='datalim')
+    plot.relim()
+    plot.autoscale_view()
 
 
 def set_up_canvas(figure, parent, column, row):
