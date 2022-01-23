@@ -81,7 +81,7 @@ def update_table(time):
     v_y = dynamics.calc_osc_speed(time, w_y.value, A_y.value, f.value)
     a_x = dynamics.calc_osc_acceleration_magnitude(time, w_x.value, A_x.value, 0)
     a_y = dynamics.calc_osc_acceleration_magnitude(time, w_y.value, A_y.value, f.value)
-    e_k = dynamics.calc_kinetic_energy(1, (v_x ** 2 + v_y ** 2))
+    e_k = dynamics.calc_kinetic_energy(1, (v_x ** 2 + v_y ** 2)**(1/2))
     e_p = dynamics.calc_potential_energy(1, w_x.value, x) + dynamics.calc_potential_energy(1, w_y.value, y)
     k = dynamics.calc_curvature(v_x,v_y,a_x,a_y)
     list = [x, y, (v_x ** 2 + v_y ** 2) ** (1 / 2), (a_x ** 2 + a_y ** 2) ** (1 / 2), e_k, e_p, k]
@@ -123,6 +123,15 @@ def change_running():
 
 def change_speed(a):
     anim2._interval = INTERVAL / a
+
+
+def gcd(x, y):
+    while x != y:
+        if x > y:
+            x -= y
+        else:
+            y -= x
+    return x
 
 
 root = tk.Tk()

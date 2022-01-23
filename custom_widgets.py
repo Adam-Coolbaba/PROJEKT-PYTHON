@@ -72,10 +72,11 @@ class Table:
         for i in range(total_rows):
             for j in range(total_columns):
                 label = tk.Label(self.table_frame, font=('Arial', 16, 'bold'), anchor='w')
-                label.grid(row=i, column=j)
+                label.grid(row=i, column=j, sticky='w')
                 label.config(text=lst[i][j])
                 if j == 1:
                     self.value_label_list.append(label)
+                    label.config(width=4)
 
     def update(self, updated_list):
         for i in range(len(self.value_label_list)):
