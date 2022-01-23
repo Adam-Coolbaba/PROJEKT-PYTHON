@@ -81,10 +81,13 @@ def update_table(time):
     v_y = dynamics.calc_osc_speed(time, w_y.value, A_y.value, f.value)
     a_x = dynamics.calc_osc_acceleration_magnitude(time, w_x.value, A_x.value, 0)
     a_y = dynamics.calc_osc_acceleration_magnitude(time, w_y.value, A_y.value, f.value)
+    a_t = abs(dynamics.calc_tangential_acceleration(v_x, v_y, a_x, a_y))
+    a_n = abs(dynamics.calc_centripetal_acceleration(v_x, v_y, a_x, a_y))
+    e_t = dynamics.calc_total_energy(1, w_x.value, A_x.value) + dynamics.calc_total_energy(1, w_y.value, A_y.value)
     e_k = dynamics.calc_kinetic_energy(1, (v_x ** 2 + v_y ** 2)**(1/2))
     e_p = dynamics.calc_potential_energy(1, w_x.value, x) + dynamics.calc_potential_energy(1, w_y.value, y)
     k = dynamics.calc_curvature(v_x,v_y,a_x,a_y)
-    list = [x, y, (v_x ** 2 + v_y ** 2) ** (1 / 2), (a_x ** 2 + a_y ** 2) ** (1 / 2), e_k, e_p, k]
+    list = [x, y, (v_x ** 2 + v_y ** 2) ** (1 / 2), (a_x ** 2 + a_y ** 2) ** (1 / 2), a_t, a_n, e_t,  e_k, e_p, k]
     table.update(list)
 
 
