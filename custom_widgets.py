@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 
 class EntryBox:
@@ -18,11 +19,11 @@ class EntryBox:
         self.entry_text = tk.StringVar()
         self.entry_text.set(value)
         self.entry_text.trace_add("write", self.on_entry_change)
-        self.entry = tk.Entry(master=frame, textvariable=self.entry_text,
+        self.entry = ttk.Entry(master=frame, textvariable=self.entry_text,
                               validate='key', validatecommand=(val_cmd, '%P'), width=5, font=20, justify='center')
 
-        up_button = tk.Button(master=buttons_frame, text="+", command=self.increase, width=2, height=1)
-        down_button = tk.Button(master=buttons_frame, text="-", command=self.decrease, width=2, height=1)
+        up_button = ttk.Button(master=buttons_frame, text="+", command=self.increase, width=2)
+        down_button = ttk.Button(master=buttons_frame, text="-", command=self.decrease, width=2)
 
         name.pack(side=tk.TOP)
         self.entry.pack(side=tk.LEFT)

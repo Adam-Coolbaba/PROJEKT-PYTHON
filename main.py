@@ -1,6 +1,7 @@
 import math
 import tkinter as tk
 from functools import partial
+from tkinter import ttk
 
 import numpy as np
 
@@ -177,15 +178,15 @@ set_up_canvas(potential_fig, graphs_frame, 2, 1)
 table = Table(graphs_frame)
 table.table_frame.grid(column=2, row=2)
 main_frame.pack(fill=tk.BOTH, expand=True)
-button = tk.Button(master=root, text="Zamknij", command=_quit)
+button = ttk.Button(master=root, text="Zamknij", command=_quit)
 speed_frame = tk.Frame(master=animation_frame)
 animation_frame.grid(row=2,column=1)
 #
-stop_button = tk.Button(master=speed_frame, text="\u23f8", command=change_running, width=2)
+stop_button = ttk.Button(master=speed_frame, text="\u23f8", command=change_running, width=3)
 stop_button.pack(side=tk.LEFT)
 for i in range(5):
     speed = 2**i*0.25
-    speed_button_025 = tk.Button(master=speed_frame, text=f"{speed}", command=partial(change_speed, speed))
+    speed_button_025 = ttk.Button(master=speed_frame, text=f"x{speed}", command=partial(change_speed, speed))
     speed_button_025.pack(side=tk.LEFT)
 
 speed_frame.pack(side=tk.BOTTOM)
