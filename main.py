@@ -68,14 +68,6 @@ def plot_potential():
     potential_subplot.set_zlabel("E [J]")
 
 
-
-# def animate(i):
-#     x = A_x.value * np.sin(w_x.value * (0.01 * i))
-#     y = A_y.value * np.sin(w_y.value * (0.01 * i) + np.pi / 6 * f.value)
-#     point.set_data(x, y)
-#     return point,
-
-
 def update_table(time):
     x = dynamics.calc_deviation(A_x.value, w_x.value, time, 0)
     y = dynamics.calc_deviation(A_y.value, w_y.value, time, f.value)
@@ -93,21 +85,21 @@ def update_table(time):
     table.update(list)
 
 
-def animate2(i):
+def animate(i):
     global time, xdata, ydata, time_p
     time = (0.01 * i)
     if time - time_p > np.pi*2/np.gcd(int(w_x.value*100), int(w_y.value*100))*100:
         xdata.clear()
         ydata.clear()
         time_p = time
-    x = A_x.value * np.sin(w_x.value * time)
-    y = A_y.value * np.sin(w_y.value * time + np.pi / 6 * f.value)
+    x = dynamics.calc_deviation(A_x.value, w_x.value, time, 0)
+    y = dynamics.calc_deviation(A_y.value, w_y.value, time, f.value)
     xdata.append(x)
     ydata.append(y)
-    point2.set_data(x, y)
+    point.set_data(x, y)
     anim_line.set_data(xdata, ydata)
     update_table(time)
-    return point2,
+    return point,
 
 
 def _quit():
@@ -175,8 +167,18 @@ plot_potential()
 potential_fig.suptitle(f'Wykres potencjału', fontsize=FONT_SIZE)
 set_up_canvas(potential_fig, graphs_frame, 2, 1)
 
+lst = [("x [m]:", "0"),
+        ("y [m]:", "0"),
+        ("v [m/s]:", "0"),
+        ("a [m/s²]:", "0"),
+        ("a_t [m/s²]:", "0"),
+        ("a_n [m/s²]:", "0"),
+        ("E_c [J]", "0"),
+        ("E_k [J]:", "0",),
+        ("E_p [J]:", "0"),
+        ("\u03BA [m]" , "0")]
 
-table = Table(graphs_frame)
+table = Table(graphs_frame, lst)
 table.table_frame.grid(column=2, row=2)
 main_frame.pack(fill=tk.BOTH, expand=True)
 button = ttk.Button(master=root, text="Zamknij", command=_quit)
@@ -200,7 +202,7 @@ anim_subplot.set_xlim([-1.2, 1.2])
 anim_subplot.set_ylim([-1.2, 1.2])
 anim_line, = anim_subplot.plot([], [], lw=2)
 xdata, ydata = [], []
-point2, = anim_subplot.plot(0, 0, 'o')
+point, = anim_subplot.plot(0, 0, 'o')
 c = FigureCanvasTkAgg(anim_fig, master=animation_frame)
 c.get_tk_widget().pack()
 c.draw()
@@ -222,7 +224,7 @@ fig.tight_layout()
 potential_fig.tight_layout()
 anim_fig.tight_layout()
 
-anim2 = animation.FuncAnimation(anim_fig, animate2, interval=INTERVAL)
+anim2 = animation.FuncAnimation(anim_fig, animate, interval=INTERVAL)
 tk.mainloop()
 
 

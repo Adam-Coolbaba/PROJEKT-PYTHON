@@ -68,15 +68,18 @@ class EntryBox:
 
 class Table:
 
-    def __init__(self, root):
+    def __init__(self, root, list):
+        self.lst = list
         self.table_frame = tk.Frame(master=root)
         # code for creating table
+        total_rows = len(self.lst)
+        total_columns = len(self.lst[0])
         self.value_label_list = []
         for i in range(total_rows):
             for j in range(total_columns):
                 label = tk.Label(self.table_frame, font=('Arial', 16, 'bold'), anchor='w')
                 label.grid(row=i, column=j, sticky='w')
-                label.config(text=lst[i][j])
+                label.config(text=self.lst[i][j])
                 if j == 1:
                     self.value_label_list.append(label)
                     label.config(width=4)
@@ -84,17 +87,3 @@ class Table:
     def update(self, updated_list):
         for i in range(len(self.value_label_list)):
             self.value_label_list[i].config(text='{:.2f}'.format(updated_list[i]))
-
-lst = [("x [m]:", "0"),
-        ("y [m]:", "0"),
-        ("v [m/s]:", "0"),
-        ("a [m/s²]:", "0"),
-        ("a_t [m/s²]:", "0"),
-        ("a_n [m/s²]:", "0"),
-        ("E_c [J]", "0"),
-        ("E_k [J]:", "0",),
-        ("E_p [J]:", "0"),
-        ("\u03BA [m]" , "0")]
-
-total_rows = len(lst)
-total_columns = len(lst[0])
